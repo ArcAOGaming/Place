@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.colorPicker {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #2c2c2c;
+  border-radius: 8px;
+}
+
+.colorOption {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.colorOption:hover {
+  transform: scale(1.1);
+}
+
+.canvas {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #333;
+  background: #1a1a1a;
+}
+
+.row {
+  display: flex;
+}
+
+.pixel {
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.pixel:hover {
+  transform: scale(1.5);
+  z-index: 1;
+}

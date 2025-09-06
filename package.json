@@ -12,6 +12,7 @@
     "deploy-undername": "npm run build && permaweb-deploy --deploy-folder ./dist --arns-name $DEPLOY_ARNS_NAME --undername $DEPLOY_UNDERNAME"
   },
   "dependencies": {
+    "@permaweb/aoconnect": "0.0.90",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-ga4": "2.1.0",

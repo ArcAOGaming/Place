@@ -1,21 +1,22 @@
 .home {
-  text-align: center;
-}
-
-.home-logos {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #121212;
+  color: white;
 }
 
-.home-title {
-  font-size: 3.2em;
-  line-height: 1.1;
-  margin: 1em 0;
+.home h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
 }
 
-.home-docs-link {
-  color: #888;
-  margin-top: 2em;
+.home p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #aaa;
+  text-align: center;
 }
