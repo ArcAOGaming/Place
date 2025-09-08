@@ -1,0 +1,74 @@
+.colorPicker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+}
+
+.colorOption {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.colorOption::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.colorOption:hover {
+  transform: scale(1.15) rotate(2deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.colorOption:hover::before {
+  opacity: 1;
+}
+
+.colorOption.selected {
+  border-color: #00ff87;
+  box-shadow: 0 0 20px rgba(0, 255, 135, 0.6), 0 0 40px rgba(0, 255, 135, 0.3);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .colorPicker {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .colorOption {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .colorPicker {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0.75rem;
+  }
+
+  .colorOption {
+    width: 32px;
+    height: 32px;
+  }
+}
