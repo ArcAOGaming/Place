@@ -9,7 +9,7 @@ const { message: configuredMessage } = connect({
   MODE: "legacy"
 });
 
-const PROCESS_ID = 'CHPbivFn3bxhCi4XXjYddhuJlRZNHfh0txB6_WVGlEo';
+const PROCESS_ID = '7nW-v3ExwufcsN_We_Z2BuhiaOygJg9X6KzDkKZut6s';
 const HB_NODE = "https://hb.randao.net";
 const CANVAS_WIDTH = 25;
 const CANVAS_HEIGHT = 25;

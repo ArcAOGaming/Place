@@ -1,10 +1,12 @@
 .container {
-  min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   color: white;
-  padding: 1rem;
+  padding: 0.5rem;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .container::before {
@@ -27,29 +29,37 @@
 
 .header {
   text-align: center;
-  margin-bottom: 2rem;
-  padding: 2rem 1rem;
+  padding: 1rem 0.5rem;
+  flex-shrink: 0;
 }
 
 .header h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   background: linear-gradient(45deg, #00ff87, #60efff, #ff6b9d);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1rem;
+  margin: 0 0 0.5rem 0;
   font-weight: 700;
   letter-spacing: -0.02em;
   text-shadow: 0 0 30px rgba(0, 255, 135, 0.3);
 }
 
 .subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-size: clamp(0.8rem, 2vw, 1rem);
   color: #b0b0b0;
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.4;
   font-weight: 300;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .howTo {
@@ -123,12 +133,14 @@
 
 .footer {
   text-align: center;
-  margin-top: 3rem;
-  padding: 2rem;
+  padding: 0.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 .footer p {
   color: #a0a0a0;
-  margin: 0.5rem 0;
+  margin: 0.25rem 0;
+  font-size: 0.8rem;
 }

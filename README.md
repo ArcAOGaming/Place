@@ -1,4 +1,4 @@
-# AO Place: The First Hyperbeam Game
+# AO Pixel Art: The First Hyperbeam Game
 
 A collaborative pixel art canvas running on AO's Hyperbeam - a decentralized game engine for real-time multiplayer experiences.
 

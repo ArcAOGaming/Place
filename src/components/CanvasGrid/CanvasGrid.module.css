@@ -1,11 +1,13 @@
 .canvas {
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 4px;
-  border-radius: 12px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  padding: 2px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .canvas::before {
@@ -24,8 +26,8 @@
 }
 
 .pixel {
-  width: 20px;
-  height: 20px;
+  width: clamp(12px, 3vw, 20px);
+  height: clamp(12px, 3vw, 20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -38,6 +40,11 @@
   transform: scale(1.05);
 }
 
+.pixel:active {
+  transform: scale(0.95);
+  border-color: rgba(0, 255, 135, 0.5);
+}
+
 .pixel.preview {
   border-color: rgba(0, 255, 135, 0.6);
   box-shadow: 0 0 8px rgba(0, 255, 135, 0.4);
@@ -46,15 +53,24 @@
 }
 
 @media (max-width: 768px) {
+  .canvas {
+    padding: 1px;
+    border-width: 1px;
+  }
+  
   .pixel {
-    width: 28px;
-    height: 28px;
+    width: clamp(10px, 2.5vw, 16px);
+    height: clamp(10px, 2.5vw, 16px);
   }
 }
 
 @media (max-width: 480px) {
+  .canvas {
+    padding: 1px;
+  }
+  
   .pixel {
-    width: 24px;
-    height: 24px;
+    width: clamp(8px, 2vw, 14px);
+    height: clamp(8px, 2vw, 14px);
   }
 }
