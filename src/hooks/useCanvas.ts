@@ -11,8 +11,8 @@ const { message: configuredMessage } = connect({
 
 const PROCESS_ID = 'CHPbivFn3bxhCi4XXjYddhuJlRZNHfh0txB6_WVGlEo';
 const HB_NODE = "https://hb.randao.net";
-const CANVAS_WIDTH = 10;
-const CANVAS_HEIGHT = 10;
+const CANVAS_WIDTH = 25;
+const CANVAS_HEIGHT = 25;
 
 export const useCanvas = () => {
   const [canvas, setCanvas] = useState<number[][][]>([]);

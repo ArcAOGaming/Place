@@ -19,7 +19,7 @@ if not json then error("Failed to load json module") end
 --   - Frontend (9,9) -> Lua (10,10)
 
 -- Define canvas dimensions
-local WIDTH, HEIGHT = 10, 10
+local WIDTH, HEIGHT = 25, 25
 
 -- Initialize colors table as flat array of RGB triplets
 Colors = {}

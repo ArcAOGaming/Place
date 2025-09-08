@@ -1,0 +1,191 @@
+.colorSelector {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1;
+  font-weight: 600;
+}
+
+.collapseButton {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.collapseButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.currentColor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.colorDisplay {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.colorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.colorInfo span {
+  color: #b0b0b0;
+  font-size: 0.85rem;
+  font-family: monospace;
+}
+
+.pickerContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.colorArea {
+  width: 200px;
+  height: 120px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  cursor: crosshair;
+  overflow: hidden;
+}
+
+.colorCursor {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5), inset 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.hueSlider {
+  width: 20px;
+  height: 120px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(to bottom, 
+    #ff0000 0%, 
+    #ffff00 16.66%, 
+    #00ff00 33.33%, 
+    #00ffff 50%, 
+    #0000ff 66.66%, 
+    #ff00ff 83.33%, 
+    #ff0000 100%);
+  position: relative;
+  cursor: pointer;
+}
+
+.hueCursor {
+  position: absolute;
+  left: -2px;
+  width: 24px;
+  height: 4px;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 2px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+
+@media (max-width: 768px) {
+  .colorSelector {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  
+  .pickerContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .colorArea {
+    width: 100%;
+    height: 180px;
+  }
+  
+  .hueSlider {
+    width: 100%;
+    height: 24px;
+    background: linear-gradient(to right, 
+      #ff0000 0%, 
+      #ffff00 16.66%, 
+      #00ff00 33.33%, 
+      #00ffff 50%, 
+      #0000ff 66.66%, 
+      #ff00ff 83.33%, 
+      #ff0000 100%);
+  }
+  
+  .hueCursor {
+    top: -2px;
+    left: 50%;
+    width: 4px;
+    height: 28px;
+    transform: translateX(-50%);
+  }
+  
+  .title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .currentColor {
+    gap: 0.5rem;
+  }
+  
+  .colorDisplay {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .colorArea {
+    height: 150px;
+  }
+}

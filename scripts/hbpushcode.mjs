@@ -37,8 +37,8 @@ async function createProcess() {
   console.log(`processId: ${processId}`)
 
   // Wait 5 minutes for process initialization
-  console.log("Waiting 5 minutes before continuing...")
-  await delay(5 * 60 * 1000);
+  console.log("Waiting 15 minutes before continuing...")
+  await delay(15 * 60 * 1000);
 
   return { processId, signer };
 }

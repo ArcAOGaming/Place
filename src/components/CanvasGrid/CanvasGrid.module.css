@@ -24,19 +24,24 @@
 }
 
 .pixel {
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   position: relative;
   z-index: 1;
 }
 
 .pixel:hover {
-  transform: scale(1.3);
-  z-index: 10;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4), 0 0 24px rgba(0, 255, 135, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.pixel.preview {
+  border-color: rgba(0, 255, 135, 0.6);
+  box-shadow: 0 0 8px rgba(0, 255, 135, 0.4);
+  transform: scale(1.1);
   border-color: rgba(0, 255, 135, 0.3);
 }
 
