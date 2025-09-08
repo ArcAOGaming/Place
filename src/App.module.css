@@ -1,0 +1,81 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 3rem;
+  background: linear-gradient(45deg, #00ff87, #60efff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #a0a0a0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.howTo {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.howTo h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #00ff87;
+}
+
+.instructions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.step {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+}
+
+.step h3 {
+  color: #60efff;
+  margin-bottom: 1rem;
+}
+
+.step p {
+  color: #a0a0a0;
+  line-height: 1.5;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer p {
+  color: #a0a0a0;
+  margin: 0.5rem 0;
+}
