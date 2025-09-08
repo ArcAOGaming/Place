@@ -9,7 +9,16 @@ if not Handlers.utils.hasMatchingTag then error("Handlers.utils.hasMatchingTag i
 local json = require("json")
 if not json then error("Failed to load json module") end
 
--- Define dimensions
+-- COORDINATE SYSTEM EXPLANATION:
+-- This Lua backend uses 1-based indexing (standard for Lua)
+-- Canvas coordinates: (1,1) to (10,10)
+--   - (1,1) = top-left corner
+--   - (10,10) = bottom-right corner
+-- Frontend sends coordinates converted from 0-based to 1-based
+--   - Frontend (0,0) -> Lua (1,1)
+--   - Frontend (9,9) -> Lua (10,10)
+
+-- Define canvas dimensions
 local WIDTH, HEIGHT = 10, 10
 
 -- Initialize colors table as flat array of RGB triplets
@@ -19,15 +28,18 @@ for i = 1, WIDTH * HEIGHT * 3 do
 end
 
 -- Helper functions for pixel access
+-- These functions expect 1-based coordinates (1,1) to (10,10)
 local function setPixel(x, y, color)
-  -- x and y are already 1-based from frontend
+  -- Convert 1-based coordinates to flat array index
+  -- Formula: ((y-1) * WIDTH + (x-1)) * 3 + 1
+  -- Example: (1,1) -> index 1, (10,10) -> index 298
   local index = ((y - 1) * WIDTH + (x - 1)) * 3 + 1
   Colors[index], Colors[index+1], Colors[index+2] =
     color[1], color[2], color[3]
 end
 
 local function getPixel(x, y)
-  -- x and y are already 1-based from frontend
+  -- Convert 1-based coordinates to flat array index
   local index = ((y - 1) * WIDTH + (x - 1)) * 3 + 1
   return { Colors[index], Colors[index+1], Colors[index+2] }
 end
@@ -46,17 +58,19 @@ local function isValidColor(color)
 end
 
 -- Function to validate coordinates
+-- Accepts 1-based coordinates: (1,1) to (10,10)
 local function isValidCoordinate(x, y)
   return type(x) == "number" and type(y) == "number" and 
          x >= 1 and x <= WIDTH and y >= 1 and y <= HEIGHT
 end
 
--- Patch: directly slice Colors into 2D pixel array
+-- Patch: Convert flat Colors array to 2D pixel array for frontend
+-- Creates 1-based indexed 2D array: pixels[1][1] to pixels[10][10]
 local function patch()
   local pixels = {}
-  for y = 1, HEIGHT do
+  for y = 1, HEIGHT do -- y from 1 to 10
     local row = {}
-    for x = 1, WIDTH do
+    for x = 1, WIDTH do -- x from 1 to 10
       local index = ((y - 1) * WIDTH + (x - 1)) * 3 + 1
       row[x] = { Colors[index], Colors[index+1], Colors[index+2] }
     end

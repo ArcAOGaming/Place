@@ -12,7 +12,17 @@ const { message: configuredMessage } = connect({
 
 const PROCESS_ID = 'CHPbivFn3bxhCi4XXjYddhuJlRZNHfh0txB6_WVGlEo';
 const HB_NODE = "https://hb.randao.net";
-const STICKER_SIZE = 5; // Increased sticker size for more detail
+const STICKER_SIZE = 3; // 3x3 sticker grid for better usability
+// COORDINATE SYSTEM EXPLANATION:
+// Lua Backend: Uses 1-based indexing, coordinates (1,1) to (10,10)
+//   - (1,1) = top-left corner
+//   - (10,10) = bottom-right corner
+//   - WIDTH = 10, HEIGHT = 10
+// Frontend: Uses 0-based indexing, coordinates (0,0) to (9,9)
+//   - (0,0) = top-left corner (maps to Lua's (1,1))
+//   - (9,9) = bottom-right corner (maps to Lua's (10,10))
+const CANVAS_WIDTH = 10; // Frontend canvas: 0-9, Lua backend: 1-10
+const CANVAS_HEIGHT = 10;
 
 const Canvas = () => {
   const [canvas, setCanvas] = useState<number[][][]>([]);
@@ -37,7 +47,26 @@ const Canvas = () => {
       const endpoint = `${hyperbeamBaseUrl}/now/state/serialize~json@1.0`;
       const response = await axios.get(endpoint);
       if (response.data?.pixels && Array.isArray(response.data.pixels)) {
-        setCanvas(response.data.pixels);
+        // COORDINATE CONVERSION: Lua sends 1-based indexed array
+        // Convert to 0-based indexed array for frontend display
+        const convertedCanvas: number[][][] = [];
+        
+        // Lua sends pixels[1][1] to pixels[10][10], we need [0][0] to [9][9]
+        for (let y = 0; y <= CANVAS_HEIGHT-1; y++) {
+          if (response.data.pixels[y]) {
+            const row: number[][] = [];
+            for (let x = 0; x <= CANVAS_WIDTH-1; x++) {
+              if (response.data.pixels[y][x]) {
+                row.push(response.data.pixels[y][x]);
+              } else {
+                row.push([255, 255, 255]); // Default white
+              }
+            }
+            convertedCanvas.push(row);
+          }
+        }
+        
+        setCanvas(convertedCanvas);
       } else {
         console.error('Invalid canvas data format:', response.data);
       }
@@ -102,7 +131,8 @@ const Canvas = () => {
   };
 
   const handleCanvasClick = async (x: number, y: number) => {
-    if (x >= 25 || y >= 25) {
+    // Validate click coordinates (frontend uses 0-based indexing)
+    if (x >= CANVAS_WIDTH || y >= CANVAS_HEIGHT || x < 0 || y < 0) {
       setLastAction('Error: Position out of bounds');
       return;
     }
@@ -112,13 +142,23 @@ const Canvas = () => {
       const signer = createSigner(wallet);
 
       if (isDrawingSticker && stickerPattern.length > 0) {
-        // Apply sticker pattern at clicked location
+        // STICKER PLACEMENT LOGIC:
+        // - Center the sticker on the clicked position
+        // - Crop any pixels that would go outside canvas boundaries
+        // - Convert frontend coordinates (0-based) to Lua coordinates (1-based)
+        
+        const centerOffsetX = Math.floor(STICKER_SIZE / 2); // For 3x3: offset = 1
+        const centerOffsetY = Math.floor(STICKER_SIZE / 2);
+        
+        // Calculate final pixel positions in frontend coordinate system (0-based)
         const pixels = stickerPattern.map(pixel => ({
-          x: x + pixel.x - Math.floor(STICKER_SIZE / 2),
-          y: y + pixel.y - Math.floor(STICKER_SIZE / 2),
+          x: x + pixel.x - centerOffsetX, // Center sticker on click position
+          y: y + pixel.y - centerOffsetY,
           color: pixel.color
         })).filter(pixel => 
-          pixel.x >= 0 && pixel.x < 25 && pixel.y >= 0 && pixel.y < 25
+          // Crop to canvas boundaries (keep only pixels within 0-9 range)
+          pixel.x >= 0 && pixel.x < CANVAS_WIDTH && 
+          pixel.y >= 0 && pixel.y < CANVAS_HEIGHT
         );
 
         if (pixels.length === 0) {
@@ -126,22 +166,30 @@ const Canvas = () => {
           return;
         }
 
+        // Convert frontend coordinates (0-based) to Lua coordinates (1-based)
+        const luaPixels = pixels.map(pixel => ({
+          x: pixel.x, // Frontend (0-9) -> Lua (1-10)
+          y: pixel.y, // Frontend (0-9) -> Lua (1-10)
+          color: pixel.color
+        }));
+
         await configuredMessage({
           process: PROCESS_ID,
           signer,
           tags: [{ name: 'Action', value: 'changePixels' }],
-          data: JSON.stringify({ pixels })
+          data: JSON.stringify({ pixels: luaPixels })
         });
-        setLastAction('Sticker placed successfully');
+        setLastAction(`Sticker placed successfully (${pixels.length} pixels)`);
       } else {
-        // Single pixel change
+        // SINGLE PIXEL PLACEMENT:
+        // Convert frontend coordinate (0-based) to Lua coordinate (1-based)
         await configuredMessage({
           process: PROCESS_ID,
           signer,
           tags: [{ name: 'Action', value: 'changePixel' }],
           data: JSON.stringify({
-            x,
-            y,
+            x: x, // Frontend (0-9) -> Lua (1-10)
+            y: y, // Frontend (0-9) -> Lua (1-10)
             color: selectedColor
           })
         });
@@ -257,13 +305,25 @@ const Canvas = () => {
         {canvas.map((row, y) => (
           <div key={y} className={styles.row}>
             {row.map((pixel, x) => {
+              // Frontend coordinates: y=0-9, x=0-9 (matches click coordinates)
               let displayColor = pixel;
               
-              // Show sticker preview
+              // STICKER PREVIEW LOGIC:
+              // Show preview of sticker centered on mouse position
+              // Display all sticker pixels, even those that would be cropped
+              // (Visual feedback shows full sticker, but actual placement will crop)
               if (placementPreview && isDrawingSticker && stickerPattern.length > 0) {
-                const offsetX = x - placementPreview.x + Math.floor(STICKER_SIZE / 2);
-                const offsetY = y - placementPreview.y + Math.floor(STICKER_SIZE / 2);
-                const stickerPixel = stickerPattern.find(p => p.x === offsetX && p.y === offsetY);
+                const centerOffsetX = Math.floor(STICKER_SIZE / 2);
+                const centerOffsetY = Math.floor(STICKER_SIZE / 2);
+                
+                // Calculate which sticker pixel corresponds to current canvas position
+                const stickerX = x - placementPreview.x + centerOffsetX;
+                const stickerY = y - placementPreview.y + centerOffsetY;
+                
+                // Find matching sticker pixel
+                const stickerPixel = stickerPattern.find(p => p.x === stickerX && p.y === stickerY);
+                
+                // Show preview for all sticker pixels (even if they'd be cropped in actual placement)
                 if (stickerPixel) {
                   displayColor = stickerPixel.color;
                 }
